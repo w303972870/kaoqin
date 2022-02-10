@@ -6,6 +6,7 @@ import(
     "strings"
     "strconv"
     "github.com/xuri/excelize/v2"
+    "github.com/gookit/color"
 )
 
 var logFile string
@@ -15,11 +16,17 @@ var maxFile chan int
 
 func DoMv() {
     fmt.Println("")
-    MutuLogs.Sys( "Author: 火卯<wangdianchen@mtad.cn>\tTester/User: 刘娜" )
+    red := color.FgRed.Render
+    blue := color.FgBlue.Render
+    green := color.FgGreen.Render
+    //color.Set(color.FgCyan)
+    
+    color.New( color.FgWhite, color.BgYellow, color.OpBold).Println("[系统] Author: 火卯<wangdianchen@mtad.cn>    Tester/User: 刘娜")
+    //MutuLogs.Sys( "Author: 火卯<wangdianchen@mtad.cn>\tTester/User: 刘娜" )
     MutuLogs.Sys( "From GitHub : https://github.com/w303972870/kaoqin" )
     f, err := excelize.OpenFile( LibConfigParms.From )
     sheetName := f.GetSheetName(0)
-    MutuLogs.Sys( MtTools.Str( "开始读取 ：" , sheetName ) )
+    MutuLogs.Sys( MtTools.Str( "开始读取 ：" , red(sheetName) ) )
 
     if err != nil {
         MutuLogs.Error(err.Error())
@@ -69,7 +76,7 @@ func DoMv() {
             content := strings.TrimSpace(colCell)           
             if strings.HasPrefix( content , "考勤日期") {
                 start_date = content[13:23]
-                MutuLogs.Sys( content )
+                MutuLogs.Sys( blue(content) )
             }
             if strings.HasPrefix( content , "部门") {
                 emp_dep = strings.TrimSpace(strings.Replace( content ,"部门 :" ,"",-1))
@@ -91,12 +98,12 @@ func DoMv() {
             }
             if start_date!= "" &&emp_id != "" && emp_name != "" && emp_dep != "" {
                 shangban,_ := time.ParseInLocation("2006-01-02 15:04:05", MtTools.Str( start_date , " 09:00:00" ), time.Now().Local().Location())
-                if emp_dep == "技术部" {
-                    fmt.Println("处理",emp_dep,":",emp_name,"\t弹性")
-                    shangban,_ = time.ParseInLocation("2006-01-02 15:04:05", MtTools.Str( start_date , " 09:30:00" ), time.Now().Local().Location())
-                } else {
-                    fmt.Println("处理",emp_dep,":",emp_name)
-                }
+                //if emp_dep == "技术部" {
+                //    fmt.Println("处理",emp_dep,":",emp_name,"\t弹性")
+                //    shangban,_ = time.ParseInLocation("2006-01-02 15:04:05", MtTools.Str( start_date , " 09:30:00" ), time.Now().Local().Location())
+                //} else {
+                    fmt.Println(emp_dep,":",green(emp_name),"  ... OK")
+                //}
                 xiaban,_ := time.ParseInLocation("2006-01-02 15:04:05", MtTools.Str( start_date , " 18:30:00" ) , time.Now().Local().Location())
                 for i := 0 ;i < 31 ; i++ {
                     zaotui := 0
@@ -147,7 +154,11 @@ func DoMv() {
     }
     fn := MtTools.Str( "D:\\",strconv.Itoa( (int)(time.Now().Unix()) ) , ".xlsx" )
     f.SaveAs( fn )
-    fmt.Println("完成，输出到文件:", fn )
+    
+    fmt.Print("\n处理完成，结果输出到文件:")
+    color.New( color.FgBlue, color.BgYellow, color.OpBold).Println(fn)
+    
+    
 }
 
 
