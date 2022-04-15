@@ -158,7 +158,6 @@ func DoMv() {
     fmt.Print("\n处理完成，结果输出到文件:")
     color.New( color.FgBlue, color.BgYellow, color.OpBold).Println(fn)
     
-    
 }
 
 

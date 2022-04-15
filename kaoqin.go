@@ -13,3 +13,4 @@ func main(){
     b := make([]byte, 2)
     os.Stdin.Read(b)
 }
+

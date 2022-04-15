@@ -5,6 +5,7 @@ import(
 	"os"
     "runtime"
 )
+
 type MtLogs struct{}
 
 /*公用日志*/
