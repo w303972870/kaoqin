@@ -5,4 +5,4 @@
 # 打开cmd，输入命令kaoqin或者kaoqin -from=xxx.xlsx
 
 
-master分支最近更新输出带颜色的提示，更醒目
+# master分支最近更新输出带颜色的提示，更醒目
